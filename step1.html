@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WM EAT SU — Step 1: Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="first.css"> </head>
+<body>
+<div class="page-grid">
+<div class="card">
+
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-icon"><i class="fa-solid fa-utensils"></i></div>
+      <div class="sb-name">WM EAT SU</div>
+      <div class="sb-tag">Your Campus Food,<br>serve delicous food</div>
+    </div>
+    <nav class="sb-steps">
+      <div class="sb-step active">
+        <div class="sb-dot"><i class="fa-solid fa-user"></i></div>
+        <div class="sb-step-name">Student Info</div>
+        <div class="sb-step-sub">Name, email &amp; password</div>
+      </div>
+      <div class="sb-step">
+        <div class="sb-dot"><i class="fa-solid fa-file-lines"></i></div>
+        <div class="sb-step-name">Documents</div>
+        <div class="sb-step-sub">COE &amp; School ID</div>
+      </div>
+      <div class="sb-step">
+        <div class="sb-dot"><i class="fa-solid fa-envelope-circle-check"></i></div>
+        <div class="sb-step-name">Verify Email</div>
+        <div class="sb-step-sub">4-digit OTP code</div>
+      </div>
+    </nav>
+  </aside>
+
+  <section class="form-panel">
+    <div class="fp-top">
+      <div class="prog-track">
+        <div class="prog-fill" style="width:33.33%"></div>
+      </div>
+      <div class="step-badge">Step <em>1</em> of 3</div>
+    </div>
+
+    <div class="fp-body">
+      <div class="alert alert-err" id="gAlert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="gMsg">Please fix the errors below.</span>
+      </div>
+
+      <div class="step-panel active">
+        <div class="step-head">
+          <h2>Student Information</h2>
+          <p>Fill in your personal details to create your account.</p>
+        </div>
+
+        <div class="sec-divider">Personal Details</div>
+        <div class="fg-name">
+          <div class="fg">
+            <label>First Name <span class="req">*</span></label>
+            <div class="iw">
+              <i class="ico fa-solid fa-user"></i>
+              <input type="text" id="firstName" placeholder="Juan"/>
+            </div>
+            <div class="ferr" id="ferr-firstName"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          </div>
+          <div class="fg">
+            <label>Last Name <span class="req">*</span></label>
+            <div class="iw">
+              <i class="ico fa-solid fa-user"></i>
+              <input type="text" id="lastName" placeholder="Dela Cruz"/>
+            </div>
+            <div class="ferr" id="ferr-lastName"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          </div>
+          <div class="fg mi">
+            <label>M.I. <span class="opt">(opt)</span></label>
+            <div class="iw">
+              <i class="ico fa-solid fa-pen"></i>
+              <input type="text" id="midInit" placeholder="A." maxlength="3" style="padding-left:30px"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-divider">Account Details</div>
+        <div class="fg-1">
+          <div class="fg">
+            <label>School Email Address <span class="req">*</span></label>
+            <div class="iw">
+              <i class="ico fa-solid fa-envelope"></i>
+              <input type="email" id="email" placeholder="student@wm.edu.ph"/>
+            </div>
+            <div class="ferr" id="ferr-email"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          </div>
+        </div>
+
+        <div class="fg-1">
+          <div class="fg">
+            <label>Password <span class="req">*</span></label>
+            <div class="iw">
+              <i class="ico fa-solid fa-lock"></i>
+              <input type="password" id="password" placeholder="Create a strong password"/>
+              <button class="eye-btn" type="button" onclick="togglePw()">
+                <i class="fa-solid fa-eye" id="eyeIco"></i>
+              </button>
+            </div>
+            <div class="pw-strength">
+             <div class="pw-seg" id="ps1"></div>
+<div class="pw-seg" id="ps2"></div>
+<div class="pw-seg" id="ps3"></div>
+<div class="pw-seg" id="ps4"></div>
+<div class="pw-seg" id="ps5"></div>
+<div class="pw-lbl" id="pwLbl">—</div>
+            </div>
+            <div class="ferr" id="ferr-password"><i class="fa-solid fa-circle-exclamation"></i><span></span></div>
+          </div>
+        </div>
+
+        <div class="fg-action no-back">
+          <button class="btn btn-primary" onclick="submitStep1()">
+            Continue <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="login-link">Already have an account? <a href="signin.html">Sign In</a></div>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+
+<script>
+// UI Helpers
+function showGA(m, type='err') {
+  const el = document.getElementById('gAlert');
+  el.className = 'alert alert-' + type + ' show';
+  document.getElementById('gMsg').textContent = m;
+}
+function fErr(id, m) {
+  const el = document.getElementById('ferr-' + id); if (!el) return;
+  el.classList.add('show'); el.querySelector('span').textContent = m;
+  const inp = document.getElementById(id); if (inp) inp.classList.add('err');
+}
+function fClr(id) {
+  const el = document.getElementById('ferr-' + id); if (el) el.classList.remove('show');
+  const inp = document.getElementById(id); if (inp) inp.classList.remove('err');
+}
+function fOk(id) { const i = document.getElementById(id); if(i){i.classList.remove('err');i.classList.add('ok');} }
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function submitStep1() {
+  let ok = true;
+  ['firstName','lastName','email','password'].forEach(fClr);
+  const fn = v('firstName'), ln = v('lastName'), em = v('email'), pw = document.getElementById('password').value;
+  
+  if (!fn) { fErr('firstName','First name is required.'); ok=false; } else fOk('firstName');
+  if (!ln) { fErr('lastName','Last name is required.'); ok=false; } else fOk('lastName');
+  if (!em) { fErr('email','School email is required.'); ok=false; }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { fErr('email','Invalid email format.'); ok=false; }
+  else if (!/@wmsu\.edu\.ph$/.test(em)) { fErr('email','Must be a school email (@wmsu.edu.ph).'); ok=false; }
+  else fOk('email');
+  if (!pw) { fErr('password','Password is required.'); ok=false; }
+  else if (pw.length < 8) { fErr('password','Minimum 8 characters.'); ok=false; }
+  else fOk('password');
+  
+  if (!ok) { showGA('Please enter your details to continue.'); return; }
+  
+  // Save email to sessionStorage so Step 3 can display it!
+  sessionStorage.setItem('userEmail', em);
+  window.location.href = 'step2.html'; // Go to next page
+}
+
+// Password toggle and strength
+function togglePw() {
+  const inp = document.getElementById('password');
+  const ico = document.getElementById('eyeIco');
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  ico.className = 'fa-solid ' + (show ? 'fa-eye-slash' : 'fa-eye');
+}
+
+document.getElementById('password').addEventListener('input', function () {
+  const val = this.value;
+
+  // reset all bars
+  ['ps1','ps2','ps3','ps4','ps5'].forEach(id => {
+    document.getElementById(id).className = 'pw-seg';
+  });
+
+  const lbl = document.getElementById('pwLbl');
+
+  let sc = 0;
+
+  if (val.length >= 6) sc++;
+  if (val.length >= 8) sc++; // Give an extra point just for decent length
+  if (/[A-Z]/.test(val) || /[a-z]/.test(val)) sc++; // Point for any letters
+  if (/[0-9]/.test(val)) sc++; // Point for numbers
+  if (/[^A-Za-z0-9]/.test(val) || val.length >= 12) sc++; // Point for symbol OR excellent length
+
+  // Cap the score at 5 just in case
+  if (sc > 5) sc = 5;
+
+  const labels = ['—','Weak','Fair','Good','Very Good','Strong'];
+  const colors = [
+    'var(--gray-400)',
+    '#ef4444',
+    '#f97316',
+    '#eab308',
+    '#84cc16',
+    '#22c55e'
+  ];
+
+  const classes = ['', 'weak', 'fair', 'good', 'verygood', 'strong'];
+
+  // fill bars correctly
+  for (let i = 0; i < sc; i++) {
+    document.getElementById('ps' + (i + 1)).classList.add(classes[sc]);
+  }
+
+  lbl.textContent = labels[sc];
+  lbl.style.color = colors[sc];
+});
+</script>
+</body>
+</html>

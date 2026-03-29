@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WM EAT SU — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel ="stylesheet" href ="second.css">
+
+  
+</head>
+<body>
+<div class="page-grid">
+  <div class="card">
+    
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <div class="sb-icon"><i class="fa-solid fa-utensils"></i></div>
+        <div class="sb-name">WM EAT SU</div>
+        <div class="sb-tag">Your Campus Food,<br>serve delicious food</div>
+      </div>
+      <div class="sb-welcome">
+        <div class="sb-welcome-title">Welcome back! 👋</div>
+        <div class="sb-welcome-text">
+          Sign in to browse the campus menu, track your orders, and enjoy the food within our campus.
+        </div>
+      </div>
+    </aside>
+
+    <section class="form-panel">
+      
+      <div class="fp-head">
+        <h2>Sign In</h2>
+        <p>Enter your school email and password to continue.</p>
+      </div>
+
+      <div class="alert alert-err" id="gAlert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="gMsg">Invalid credentials. Please try again.</span>
+      </div>
+      <div class="alert alert-ok" id="gOk">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="gOkMsg">Signed in successfully! Redirecting…</span>
+      </div>
+
+      <div class="fg">
+        <label for="email">School Email Address <span class="req">*</span></label>
+        <div class="iw">
+          <i class="ico fa-solid fa-envelope"></i>
+          <input type="email" id="email" placeholder="Enter your email" autocomplete="email"/>
+        </div>
+        <div class="ferr" id="ferr-email">
+          <i class="fa-solid fa-circle-exclamation"></i><span></span>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="password">Password <span class="req">*</span></label>
+        <div class="iw">
+          <i class="ico fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password"/>
+          <button class="eye-btn" type="button" onclick="togglePw()">
+            <i class="fa-solid fa-eye" id="eyeIco"></i>
+          </button>
+        </div>
+        <div class="ferr" id="ferr-password">
+          <i class="fa-solid fa-circle-exclamation"></i><span></span>
+        </div>
+      </div>
+
+      <div class="row-forgot">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <div class="row-remember">
+        <input type="checkbox" id="remember"/>
+        <label for="remember">Remember me for 30 days</label>
+      </div>
+
+      <button class="btn btn-primary" id="signInBtn" onclick="signIn()">
+        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+      </button>
+
+      <div class="signup-link">
+        Don't have an account? <a href="step1.html">Sign Up</a>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<script>
+  // ── Helpers ──────────────────────────────────────────────
+  function showGA(msg, type = 'err') {
+    const errEl = document.getElementById('gAlert');
+    const okEl  = document.getElementById('gOk');
+    errEl.classList.remove('show');
+    okEl.classList.remove('show');
+    if (type === 'ok') {
+      document.getElementById('gOkMsg').textContent = msg;
+      okEl.classList.add('show');
+    } else {
+      document.getElementById('gMsg').textContent = msg;
+      errEl.classList.add('show');
+    }
+  }
+
+  function fErr(id, msg) {
+    const el = document.getElementById('ferr-' + id);
+    if (!el) return;
+    el.classList.add('show');
+    el.querySelector('span').textContent = msg;
+    const inp = document.getElementById(id);
+    if (inp) inp.classList.add('err');
+  }
+
+  function fClr(id) {
+    const el = document.getElementById('ferr-' + id);
+    if (el) el.classList.remove('show');
+    const inp = document.getElementById(id);
+    if (inp) { inp.classList.remove('err'); inp.classList.remove('ok'); }
+  }
+
+  function fOk(id) {
+    const inp = document.getElementById(id);
+    if (inp) { inp.classList.remove('err'); inp.classList.add('ok'); }
+  }
+
+  function v(id) { return document.getElementById(id).value.trim(); }
+
+  // ── Toggle password ───────────────────────────────────────
+  function togglePw() {
+    const inp = document.getElementById('password');
+    const ico = document.getElementById('eyeIco');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    ico.className = 'fa-solid ' + (show ? 'fa-eye-slash' : 'fa-eye');
+  }
+
+  // ── Sign in logic ─────────────────────────────────────────
+  function signIn() {
+    ['email', 'password'].forEach(fClr);
+    document.getElementById('gAlert').classList.remove('show');
+    document.getElementById('gOk').classList.remove('show');
+
+    const em = v('email');
+    const pw = document.getElementById('password').value;
+    let ok = true;
+
+    // Validate email
+    if (!em) {
+      fErr('email', 'School email is required.');
+      ok = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      fErr('email', 'Invalid email format.');
+      ok = false;
+    } else if (!/@wmsu\.edu\.ph$/.test(em)) {
+      fErr('email', 'Must be a school email (@wmsu.edu.ph).');
+      ok = false;
+    } else if (!em.startsWith('student@') && !em.startsWith('admin@')) {
+      // NEW LOGIC: ensure it starts with student@ or admin@
+      fErr('email', 'Email must start with student@ or admin@');
+      ok = false;
+    } else {
+      fOk('email');
+    }
+
+    // Validate password (just checking length for the demo)
+    if (!pw) {
+      fErr('password', 'Password is required.');
+      ok = false;
+    } else if (pw.length < 8) {
+      fErr('password', 'Minimum 8 characters.');
+      ok = false;
+    } else {
+      fOk('password');
+    }
+
+    if (!ok) {
+      showGA('Please enter your login details to continue.');
+      return;
+    }
+
+    // Simulate auth check
+    const btn = document.getElementById('signInBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Signing in…';
+
+    setTimeout(() => {
+      // Role-based routing
+      if (em.startsWith('student@')) {
+        showGA('Student signed in successfully! Redirecting…', 'ok');
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Welcome Student!';
+        // Redirect to student page
+        setTimeout(() => { window.location.href = 'student-dashboard.html'; }, 1000);
+      } 
+      else if (em.startsWith('admin@')) {
+        showGA('Admin signed in successfully! Redirecting…', 'ok');
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Welcome Admin!';
+        // Redirect to admin page
+        setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 1000);
+      } 
+      else {
+        // Fallback in case they slip past validation
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+        showGA('Something went wrong. Please try again.');
+      }
+    }, 1200);
+  }
+
+  // ── Enter key support ─────────────────────────────────────
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') signIn();
+  });
+
+  // ── Clear errors on input ─────────────────────────────────
+  ['email', 'password'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => fClr(id));
+  });
+</script>
+</body>
+</html>
