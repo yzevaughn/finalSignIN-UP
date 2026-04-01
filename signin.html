@@ -170,8 +170,8 @@
     if (!pw) {
       fErr('password', 'Password is required.');
       ok = false;
-    } else if (pw.length < 8) {
-      fErr('password', 'Minimum 8 characters.');
+    } else if (pw.length < 6) {
+      fErr('password', 'Minimum 6 characters.');
       ok = false;
     } else {
       fOk('password');

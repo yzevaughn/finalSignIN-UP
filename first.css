@@ -179,6 +179,7 @@ html, body { min-height: 100vh; font-family: 'Inter', sans-serif; background: va
    FORM PANEL
 ─────────────────────────────────────── */
 .form-panel {
+  position:relative;
   display: grid;
   grid-template-rows: auto 1fr;
   background: var(--white);
@@ -482,6 +483,45 @@ input.ok  { border-color: #22c55e !important; }
   box-shadow:0 6px 22px rgba(34,197,94,.3);
   animation:popIn .45s cubic-bezier(.34,1.56,.64,1) both;
 }
+
+.success-page .fp-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.success-page .success-panel {
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════
+   SUCCESS PAGE CENTERING OVERRIDES
+═══════════════════════════════════════ */
+.success-page .form-panel {
+  display: flex; /* Overrides the grid layout */
+  flex-direction: column;
+}
+
+.success-page .fp-body {
+  flex: 1; /* Forces the body to take up 100% of the available vertical space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers content vertically */
+  padding: 0 34px; /* Adjust padding so it doesn't push off-center */
+}
+.success-page a {
+  text-decoration: none;
+}
+.success-page .success-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
 .success-panel h2 { font-family:'Inter',sans-serif; font-size:21px; font-weight:800; color:var(--gray-900); margin-bottom:7px; }
 .success-panel p { font-size:13px; color:var(--gray-500); font-family:'Inter',sans-serif; line-height:1.65; max-width:310px; margin:0 auto; }
